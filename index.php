@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Citizenship Ethics Annotation Framework</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container py-4">
+        <!-- Header Section -->
+        <div class="row mb-4 align-items-center">
+            <div class="col-md-9">
+                <span class="text-uppercase tracking-wider font-monospace text-muted small fw-bold">Kerangka Anotasi — Deteksi Hoaks Politik</span>
+                <h1 class="fw-bold text-dark mt-1 mb-2">Digital Citizenship Ethics Annotation Framework</h1>
+                <p class="text-secondary mb-0">
+                    Alat anotasi untuk mengoperasionalkan lima dimensi etika kewarganegaraan digital menjadi vektor fitur numerik, digunakan pada tahap rekayasa fitur DCE-CivicBERT.
+                </p>
+            </div>
+            <div class="col-md-3 text-md-end mt-3 mt-md-0">
+                <span class="badge bg-light text-dark border px-3 py-2 font-monospace fw-normal">DCE-CivicBERT / v1</span>
+            </div>
+        </div>
+
+        <form id="annotationForm">
+            <div class="row">
+                <!-- Kolom Kiri: Input Dokumen, Label, dan Ringkasan Vektor -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card shadow-sm border p-4 bg-white h-100">
+                        <h6 class="text-uppercase font-monospace text-muted fs-7 fw-bold mb-3">Dokumen yang Dianotasi</h6>
+                        
+                        <!-- Teks Postingan -->
+                        <div class="mb-3">
+                            <label class="form-label text-uppercase text-muted fs-8 fw-bold">Teks Postingan / Komentar Politik</label>
+                            <textarea class="form-control" id="documentText" name="documentText" rows="5" placeholder="Tempel teks postingan atau komentar bertema politik di sini..." required></textarea>
+                        </div>
+
+                        <!-- Label Hoaks -->
+                        <div class="mb-4">
+                            <label class="form-label text-uppercase text-muted fs-8 fw-bold">Label Hoaks</label>
+                            <div class="d-flex gap-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="hoaxLabel" id="labelHoaks" value="Hoaks">
+                                    <label class="form-check-label" for="labelHoaks">Hoaks</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="hoaxLabel" id="labelBukanHoaks" value="Bukan hoaks" checked>
+                                    <label class="form-check-label" for="labelBukanHoaks">Bukan hoaks</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Kotak Preview Vektor & Skor -->
+                        <div class="border rounded p-3 mb-4 bg-light-subtle">
+                            <div class="row align-items-center">
+                                <div class="col-4 text-center">
+                                    <div class="score-circle mx-auto d-flex align-items-center justify-content-center border border-2 rounded-circle mb-1">
+                                        <span id="avgScoreDisplay" class="fw-bold fs-5">—</span>
+                                    </div>
+                                    <small class="text-muted text-uppercase fs-9 fw-bold">Skor Etika</small>
+                                </div>
+                                <div class="col-8">
+                                    <small class="text-muted fw-bold">Vektor fitur etika:</small>
+                                    <code class="d-block text-dark mt-1 font-monospace fs-7" id="vectorDisplay">[0.00, 0.00, 0.00, 0.00, 0.00]</code>
+                                    <!-- Bar Mini Indikator -->
+                                    <div class="d-flex gap-1 mt-2">
+                                        <div class="flex-fill bg-secondary-subtle rounded-1 py-1 text-center"><small class="fs-10 text-muted">Integritas</small></div>
+                                        <div class="flex-fill bg-secondary-subtle rounded-1 py-1 text-center"><small class="fs-10 text-muted">Bukti</small></div>
+                                        <div class="flex-fill bg-secondary-subtle rounded-1 py-1 text-center"><small class="fs-10 text-muted">Santun</small></div>
+                                        <div class="flex-fill bg-secondary-subtle rounded-1 py-1 text-center"><small class="fs-10 text-muted">Toleransi</small></div>
+                                        <div class="flex-fill bg-secondary-subtle rounded-1 py-1 text-center"><small class="fs-10 text-muted">Tanggung jawab</small></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tombol Aksi -->
+                        <div class="d-flex flex-wrap gap-2 mt-auto">
+                            <button type="submit" class="btn btn-dark px-4 py-2">Simpan anotasi</button>
+                            <button type="button" id="resetBtn" class="btn btn-outline-secondary px-3 py-2">Kosongkan</button>
+                            <button type="button" id="exportBtn" class="btn btn-outline-secondary px-3 py-2">Ekspor JSON</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kolom Kanan: 5 Dimensi Etika (Slider / Input Interaktif) -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card shadow-sm border p-4 bg-white h-100">
+                        <h6 class="text-uppercase font-monospace text-muted fs-7 fw-bold mb-3">Lima dimensi etika kewarganegaraan digital</h6>
+
+                        <!-- Dimensi 1 -->
+                        <div class="border rounded p-3 mb-3 dimension-card">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <div>
+                                    <span class="fw-bold text-dark d-block">Information integrity</span>
+                                    <small class="text-muted">Integritas informasi</small>
+                                </div>
+                                <span class="fw-bold font-monospace val-badge" id="val1Text">0.00</span>
+                            </div>
+                            <input type="range" class="form-range custom-range mt-2" min="0" max="1" step="0.01" value="0" id="dim1" name="dim1" oninput="updateValues()">
+                        </div>
+
+                        <!-- Dimensi 2 -->
+                        <div class="border rounded p-3 mb-3 dimension-card">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <div>
+                                    <span class="fw-bold text-dark d-block">Evidence-based claim</span>
+                                    <small class="text-muted">Klaim berbasis bukti</small>
+                                </div>
+                                <span class="fw-bold font-monospace val-badge" id="val2Text">0.00</span>
+                            </div>
+                            <input type="range" class="form-range custom-range mt-2" min="0" max="1" step="0.01" value="0" id="dim2" name="dim2" oninput="updateValues()">
+                        </div>
+
+                        <!-- Dimensi 3 -->
+                        <div class="border rounded p-3 mb-3 dimension-card">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <div>
+                                    <span class="fw-bold text-dark d-block">Respectful communication</span>
+                                    <small class="text-muted">Komunikasi yang santun</small>
+                                </div>
+                                <span class="fw-bold font-monospace val-badge" id="val3Text">0.00</span>
+                            </div>
+                            <input type="range" class="form-range custom-range mt-2" min="0" max="1" step="0.01" value="0" id="dim3" name="dim3" oninput="updateValues()">
+                        </div>
+
+                        <!-- Dimensi 4 -->
+                        <div class="border rounded p-3 mb-3 dimension-card">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <div>
+                                    <span class="fw-bold text-dark d-block">Tolerance and diversity</span>
+                                    <small class="text-muted">Toleransi keberagaman</small>
+                                </div>
+                                <span class="fw-bold font-monospace val-badge" id="val4Text">0.00</span>
+                            </div>
+                            <input type="range" class="form-range custom-range mt-2" min="0" max="1" step="0.01" value="0" id="dim4" name="dim4" oninput="updateValues()">
+                        </div>
+
+                        <!-- Dimensi 5 -->
+                        <div class="border rounded p-3 dimension-card">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <div>
+                                    <span class="fw-bold text-dark d-block">Democratic responsibility</span>
+                                    <small class="text-muted">Tanggung jawab demokratis</small>
+                                </div>
+                                <span class="fw-bold font-monospace val-badge" id="val5Text">0.00</span>
+                            </div>
+                            <input type="range" class="form-range custom-range mt-2" min="0" max="1" step="0.01" value="0" id="dim5" name="dim5" oninput="updateValues()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!-- Tabel Dokumen Tersimpan -->
+        <div class="card shadow-sm border p-4 bg-white mt-2">
+            <h6 class="text-uppercase font-monospace text-muted fs-7 fw-bold mb-3" id="tableTitle">Dokumen tersimpan (0)</h6>
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead>
+                        <tr class="text-uppercase text-muted fs-9 font-monospace border-bottom">
+                            <th style="width: 45%;">Cuplikan teks</th>
+                            <th style="width: 15%;">Label</th>
+                            <th style="width: 25%;">Vektor etika</th>
+                            <th style="width: 15%;">Skor</th>
+                        </tr>
+                    </thead>
+                    <tbody id="savedTableBody">
+                        <tr>
+                            <td colspan="4" class="text-secondary fst-italic py-3">Belum ada dokumen yang dianotasi.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Script -->
+    <script src="script.js"></script>
+</body>
+</html>
