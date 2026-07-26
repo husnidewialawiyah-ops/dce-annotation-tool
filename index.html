@@ -222,8 +222,9 @@
         let numScore = parseFloat(score);
         if (numScore >= 0.81) return { name: 'Sangat Baik', class: 'bg-success' };
         if (numScore >= 0.61) return { name: 'Baik', class: 'bg-primary' };
-        if (numScore >= 0.41) return { name: 'Cukup', class: 'bg-warning text-dark' };
-        return { name: 'Buruk', class: 'bg-danger' };
+        if (numScore >= 0.41) return { name: 'Cukup', class: 'bg-info text-dark' };
+        if (numScore >= 0.21) return { name: 'Buruk', class: 'bg-warning text-dark' };
+        return { name: 'Sangat Buruk', class: 'bg-danger' };
     }
 
     const docInput = document.getElementById('documentText');
