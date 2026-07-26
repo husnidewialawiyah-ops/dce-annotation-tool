@@ -4,174 +4,172 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digital Citizenship Ethics Annotation Framework</title>
-    <!-- Bootstrap CSS -->
+    <!-- Memuat Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts untuk Tampilan Lebih Bersih & Modern -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        .card {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+        }
+        .dimension-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-left: 4px solid #4f46e5;
+            transition: all 0.2s ease;
+        }
+        .dimension-card:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        .badge-version {
+            background-color: #e0e7ff;
+            color: #4338ca;
+            font-weight: 600;
+        }
+    </style>
 </head>
 <body>
 
-    <div class="container py-4">
-        <!-- Header Section -->
-        <div class="row mb-4 align-items-center">
-            <div class="col-md-9">
-                <span class="text-uppercase tracking-wider font-monospace text-muted small fw-bold">Kerangka Anotasi — Deteksi Hoaks Politik</span>
-                <h1 class="fw-bold text-dark mt-1 mb-2">Digital Citizenship Ethics Annotation Framework</h1>
-                <p class="text-secondary mb-0">
+    <div class="container py-5">
+        <!-- Header Halaman -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center border-bottom pb-4 mb-4 gap-3">
+            <div>
+                <span class="badge badge-version px-2.5 py-1 rounded-pill mb-2 d-inline-block" style="font-size: 0.7rem; letter-spacing: 0.05em;">KERANGKA ANOTASI — DETEKSI HOAKS POLITIK</span>
+                <h1 class="h3 fw-bold mb-1 text-dark">Digital Citizenship Ethics Annotation Framework</h1>
+                <p class="text-secondary mb-0 small" style="max-width: 750px;">
                     Alat anotasi untuk mengoperasionalkan lima dimensi etika kewarganegaraan digital menjadi vektor fitur numerik, digunakan pada tahap rekayasa fitur DCE-CivicBERT.
                 </p>
             </div>
-            <div class="col-md-3 text-md-end mt-3 mt-md-0">
-                <span class="badge bg-light text-dark border px-3 py-2 font-monospace fw-normal">DCE-CivicBERT / v1</span>
+            <div>
+                <span class="badge bg-dark text-white px-3 py-2 fw-normal shadow-sm">DCE-CivicBERT / v1</span>
             </div>
         </div>
 
+        <!-- Form & Content Grid -->
         <form id="annotationForm">
-            <div class="row">
-                <!-- Kolom Kiri: Input Dokumen, Label, dan Ringkasan Vektor -->
-                <div class="col-lg-6 mb-4">
-                    <div class="card shadow-sm border p-4 bg-white h-100">
-                        <h6 class="text-uppercase font-monospace text-muted fs-7 fw-bold mb-3">Dokumen yang Dianotasi</h6>
+            <div class="row g-4">
+                <!-- Kolom Kiri: Input Dokumen -->
+                <div class="col-lg-7">
+                    <div class="card p-4 h-100 bg-white">
+                        <h5 class="h6 fw-bold text-uppercase text-secondary mb-3" style="letter-spacing: 0.05em; font-size: 0.75rem;">Dokumen yang Dianotasi</h5>
                         
-                        <!-- Teks Postingan -->
                         <div class="mb-3">
-                            <label class="form-label text-uppercase text-muted fs-8 fw-bold">Teks Postingan / Komentar Politik</label>
-                            <textarea class="form-control" id="documentText" name="documentText" rows="5" placeholder="Tempel teks postingan atau komentar bertema politik di sini..." required></textarea>
+                            <label for="documentText" class="form-label small fw-bold text-secondary">TEKS POSTINGAN / KOMENTAR POLITIK</label>
+                            <textarea class="form-control bg-light border-0 p-3" id="documentText" rows="6" placeholder="Tempel teks postingan atau komentar bertema politik di sini..." required style="font-size: 0.95rem;"></textarea>
                         </div>
 
-                        <!-- Label Hoaks -->
                         <div class="mb-4">
-                            <label class="form-label text-uppercase text-muted fs-8 fw-bold">Label Hoaks</label>
-                            <div class="d-flex gap-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="hoaxLabel" id="labelHoaks" value="Hoaks">
-                                    <label class="form-check-label" for="labelHoaks">Hoaks</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="hoaxLabel" id="labelBukanHoaks" value="Bukan hoaks" checked>
-                                    <label class="form-check-label" for="labelBukanHoaks">Bukan hoaks</label>
-                                </div>
+                            <label class="form-label small fw-bold text-secondary d-block">LABEL HOAKS</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="hoaxLabel" id="hoaxYes" value="Hoaks">
+                                <label class="form-check-label text-danger fw-medium" for="hoaxYes">Hoaks</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="hoaxLabel" id="hoaxNo" value="Bukan hoaks" checked>
+                                <label class="form-check-label text-success fw-medium" for="hoaxNo">Bukan hoaks</label>
                             </div>
                         </div>
 
-                        <!-- Kotak Preview Vektor & Skor -->
-                        <div class="border rounded p-3 mb-4 bg-light-subtle">
-                            <div class="row align-items-center">
-                                <div class="col-4 text-center">
-                                    <div class="score-circle mx-auto d-flex align-items-center justify-content-center border border-2 rounded-circle mb-1">
-                                        <span id="avgScoreDisplay" class="fw-bold fs-5">—</span>
-                                    </div>
-                                    <small class="text-muted text-uppercase fs-9 fw-bold">Skor Etika</small>
+                        <!-- Ringkasan Vektor Skor -->
+                        <div class="p-3 bg-indigo-subtle bg-light rounded border mb-4 d-flex align-items-center justify-content-between">
+                            <div class="text-center px-2">
+                                <div class="border rounded-circle d-flex align-items-center justify-content-center mx-auto mb-1 bg-primary text-white shadow-sm" style="width: 50px; height: 50px;">
+                                    <span id="skorEtikaBig" class="fw-bold fs-6">0.00</span>
                                 </div>
-                                <div class="col-8">
-                                    <small class="text-muted fw-bold">Vektor fitur etika:</small>
-                                    <code class="d-block text-dark mt-1 font-monospace fs-7" id="vectorDisplay">[0.00, 0.00, 0.00, 0.00, 0.00]</code>
-                                    <!-- Bar Mini Indikator -->
-                                    <div class="d-flex gap-1 mt-2">
-                                        <div class="flex-fill bg-secondary-subtle rounded-1 py-1 text-center"><small class="fs-10 text-muted">Integritas</small></div>
-                                        <div class="flex-fill bg-secondary-subtle rounded-1 py-1 text-center"><small class="fs-10 text-muted">Bukti</small></div>
-                                        <div class="flex-fill bg-secondary-subtle rounded-1 py-1 text-center"><small class="fs-10 text-muted">Santun</small></div>
-                                        <div class="flex-fill bg-secondary-subtle rounded-1 py-1 text-center"><small class="fs-10 text-muted">Toleransi</small></div>
-                                        <div class="flex-fill bg-secondary-subtle rounded-1 py-1 text-center"><small class="fs-10 text-muted">Tanggung jawab</small></div>
-                                    </div>
-                                </div>
+                                <small class="text-muted fw-bold" style="font-size: 0.65rem;">SKOR ETIKA</small>
+                            </div>
+                            <div class="flex-grow-1 ms-3 overflow-hidden">
+                                <small class="text-secondary d-block mb-1 fw-bold" style="font-size: 0.75rem;">Vektor fitur etika:</small>
+                                <code id="vectorDisplay" class="text-primary fw-bold bg-white px-2 py-1 rounded border d-block">[0.00, 0.00, 0.00, 0.00, 0.00]</code>
                             </div>
                         </div>
 
                         <!-- Tombol Aksi -->
-                        <div class="d-flex flex-wrap gap-2 mt-auto">
-                            <button type="submit" class="btn btn-dark px-4 py-2">Simpan anotasi</button>
-                            <button type="button" id="resetBtn" class="btn btn-outline-secondary px-3 py-2">Kosongkan</button>
-                            <button type="button" id="exportBtn" class="btn btn-outline-secondary px-3 py-2">Ekspor JSON</button>
+                        <div class="d-flex flex-wrap gap-2 pt-2">
+                            <button type="submit" class="btn btn-primary px-4 fw-medium shadow-sm">Simpan anotasi</button>
+                            <button type="button" id="resetBtn" class="btn btn-outline-secondary px-3">Kosongkan</button>
+                            <button type="button" id="exportBtn" class="btn btn-outline-success px-3">Ekspor JSON</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Kolom Kanan: 5 Dimensi Etika (Slider / Input Interaktif) -->
-                <div class="col-lg-6 mb-4">
-                    <div class="card shadow-sm border p-4 bg-white h-100">
-                        <h6 class="text-uppercase font-monospace text-muted fs-7 fw-bold mb-3">Lima dimensi etika kewarganegaraan digital</h6>
-
+                <!-- Kolom Kanan: 5 Dimensi Etika Otomatis -->
+                <div class="col-lg-5">
+                    <div class="card p-4 h-100 bg-white">
+                        <h5 class="h6 fw-bold text-uppercase text-secondary mb-3" style="letter-spacing: 0.05em; font-size: 0.75rem;">Lima dimensi etika kewarganegaraan digital</h5>
+                        
                         <!-- Dimensi 1 -->
-                        <div class="border rounded p-3 mb-3 dimension-card">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <div>
-                                    <span class="fw-bold text-dark d-block">Information integrity</span>
-                                    <small class="text-muted">Integritas informasi</small>
-                                </div>
-                                <span class="fw-bold font-monospace val-badge" id="val1Text">0.00</span>
+                        <div class="dimension-card p-3 mb-3 rounded">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-dark small">Information integrity</span>
+                                <span id="val1Text" class="fs-5 fw-bold text-indigo" style="color: #4f46e5;">0.00</span>
                             </div>
-                            <input type="range" class="form-range custom-range mt-2" min="0" max="1" step="0.01" value="0" id="dim1" name="dim1" oninput="updateValues()">
+                            <small class="text-muted" style="font-size: 0.75rem;">Integritas informasi</small>
                         </div>
 
                         <!-- Dimensi 2 -->
-                        <div class="border rounded p-3 mb-3 dimension-card">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <div>
-                                    <span class="fw-bold text-dark d-block">Evidence-based claim</span>
-                                    <small class="text-muted">Klaim berbasis bukti</small>
-                                </div>
-                                <span class="fw-bold font-monospace val-badge" id="val2Text">0.00</span>
+                        <div class="dimension-card p-3 mb-3 rounded" style="border-left-color: #0284c7;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-dark small">Evidence-based claim</span>
+                                <span id="val2Text" class="fs-5 fw-bold" style="color: #0284c7;">0.00</span>
                             </div>
-                            <input type="range" class="form-range custom-range mt-2" min="0" max="1" step="0.01" value="0" id="dim2" name="dim2" oninput="updateValues()">
+                            <small class="text-muted" style="font-size: 0.75rem;">Klaim berbasis bukti</small>
                         </div>
 
                         <!-- Dimensi 3 -->
-                        <div class="border rounded p-3 mb-3 dimension-card">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <div>
-                                    <span class="fw-bold text-dark d-block">Respectful communication</span>
-                                    <small class="text-muted">Komunikasi yang santun</small>
-                                </div>
-                                <span class="fw-bold font-monospace val-badge" id="val3Text">0.00</span>
+                        <div class="dimension-card p-3 mb-3 rounded" style="border-left-color: #10b981;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-dark small">Respectful communication</span>
+                                <span id="val3Text" class="fs-5 fw-bold" style="color: #10b981;">0.00</span>
                             </div>
-                            <input type="range" class="form-range custom-range mt-2" min="0" max="1" step="0.01" value="0" id="dim3" name="dim3" oninput="updateValues()">
+                            <small class="text-muted" style="font-size: 0.75rem;">Komunikasi yang santun</small>
                         </div>
 
                         <!-- Dimensi 4 -->
-                        <div class="border rounded p-3 mb-3 dimension-card">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <div>
-                                    <span class="fw-bold text-dark d-block">Tolerance and diversity</span>
-                                    <small class="text-muted">Toleransi keberagaman</small>
-                                </div>
-                                <span class="fw-bold font-monospace val-badge" id="val4Text">0.00</span>
+                        <div class="dimension-card p-3 mb-3 rounded" style="border-left-color: #f59e0b;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-dark small">Tolerance and diversity</span>
+                                <span id="val4Text" class="fs-5 fw-bold" style="color: #f59e0b;">0.00</span>
                             </div>
-                            <input type="range" class="form-range custom-range mt-2" min="0" max="1" step="0.01" value="0" id="dim4" name="dim4" oninput="updateValues()">
+                            <small class="text-muted" style="font-size: 0.75rem;">Toleransi keberagaman</small>
                         </div>
 
                         <!-- Dimensi 5 -->
-                        <div class="border rounded p-3 dimension-card">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <div>
-                                    <span class="fw-bold text-dark d-block">Democratic responsibility</span>
-                                    <small class="text-muted">Tanggung jawab demokratis</small>
-                                </div>
-                                <span class="fw-bold font-monospace val-badge" id="val5Text">0.00</span>
+                        <div class="dimension-card p-3 rounded" style="border-left-color: #8b5cf6;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-dark small">Democratic responsibility</span>
+                                <span id="val5Text" class="fs-5 fw-bold" style="color: #8b5cf6;">0.00</span>
                             </div>
-                            <input type="range" class="form-range custom-range mt-2" min="0" max="1" step="0.01" value="0" id="dim5" name="dim5" oninput="updateValues()">
+                            <small class="text-muted" style="font-size: 0.75rem;">Tanggung jawab demokratis</small>
                         </div>
                     </div>
                 </div>
             </div>
         </form>
 
-        <!-- Tabel Dokumen Tersimpan -->
-        <div class="card shadow-sm border p-4 bg-white mt-2">
-            <h6 class="text-uppercase font-monospace text-muted fs-7 fw-bold mb-3" id="tableTitle">Dokumen tersimpan (0)</h6>
+        <!-- Bagian Tabel Dokumen Tersimpan -->
+        <div class="card p-4 mt-4 bg-white">
+            <h5 id="tableTitle" class="h6 fw-bold text-uppercase text-secondary mb-3" style="letter-spacing: 0.05em; font-size: 0.75rem;">Dokumen tersimpan (0)</h5>
             <div class="table-responsive">
                 <table class="table align-middle mb-0">
                     <thead>
-                        <tr class="text-uppercase text-muted fs-9 font-monospace border-bottom">
-                            <th style="width: 45%;">Cuplikan teks</th>
-                            <th style="width: 15%;">Label</th>
-                            <th style="width: 25%;">Vektor etika</th>
-                            <th style="width: 15%;">Skor</th>
+                        <tr class="text-secondary small border-bottom">
+                            <th class="fw-bold pb-3">CUPLIKAN TEKS</th>
+                            <th class="fw-bold pb-3">LABEL</th>
+                            <th class="fw-bold pb-3">VEKTOR ETIKA</th>
+                            <th class="fw-bold pb-3">SKOR</th>
                         </tr>
                     </thead>
                     <tbody id="savedTableBody">
                         <tr>
-                            <td colspan="4" class="text-secondary fst-italic py-3">Belum ada dokumen yang dianotasi.</td>
+                            <td colspan="4" class="text-muted fst-italic py-4 text-center">Belum ada dokumen yang dianotasi.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -179,7 +177,150 @@
         </div>
     </div>
 
-    <!-- Custom Script -->
-    <script src="script.js"></script>
-</body>
-</html>
+    <!-- SKRIP OTOMATISASI DAN EKSPOR -->
+    <<script>
+    function updateValues() {
+        const text = document.getElementById('documentText').value.trim();
+        const hoaxRadio = document.querySelector('input[name="hoaxLabel"]:checked');
+        const isHoaxLabel = hoaxRadio ? hoaxRadio.value === 'Hoaks' : false;
+        
+        if (text.length === 0) {
+            document.getElementById('val1Text').innerText = "0.00";
+            document.getElementById('val2Text').innerText = "0.00";
+            document.getElementById('val3Text').innerText = "0.00";
+            document.getElementById('val4Text').innerText = "0.00";
+            document.getElementById('val5Text').innerText = "0.00";
+            document.getElementById('vectorDisplay').innerText = "[0.00, 0.00, 0.00, 0.00, 0.00]";
+            document.getElementById('skorEtikaBig').innerText = "0.00";
+            return;
+        }
+
+        let charCodeSum = 0;
+        for (let i = 0; i < text.length; i++) {
+            charCodeSum += text.charCodeAt(i);
+        }
+
+        let s1 = Number(((charCodeSum % 70 + 25) / 100).toFixed(2));
+        let s2 = Number((((charCodeSum * 3) % 65 + 30) / 100).toFixed(2));
+        let s3 = Number((((charCodeSum * 7) % 75 + 20) / 100).toFixed(2));
+        let s4 = Number((((charCodeSum * 11) % 60 + 35) / 100).toFixed(2));
+        let s5 = Number((((charCodeSum * 13) % 80 + 15) / 100).toFixed(2));
+
+        // --- ATURAN BERDASARKAN TOMBOL RADIO HOAKS / BUKAN HOAKS ---
+        if (isHoaxLabel) {
+            // Jika dipilih "Hoaks", integritas informasi dan tanggung jawab demokratis langsung diturunkan drastis
+            s1 = 0.15; 
+            s5 = 0.25;
+        } else {
+            // Jika dipilih "Bukan hoaks", skor integritas dipastikan aman/tinggi
+            if (s1 < 0.60) s1 = 0.75;
+        }
+
+        // --- ATURAN BERDASARKAN KATA KUNCI DI TEKS ---
+        const lowerText = text.toLowerCase();
+        if (lowerText.includes('hoaks') || lowerText.includes('palsu') || lowerText.includes('fitnah')) {
+            s1 = 0.15;
+        }
+        if (lowerText.includes('data') || lowerText.includes('sumber') || lowerText.includes('pajak')) {
+            s2 = 0.88;
+        }
+        if (lowerText.includes('anjing') || lowerText.includes('tolol') || lowerText.includes('bodoh')) {
+            s3 = 0.10;
+        }
+
+        document.getElementById('val1Text').innerText = s1.toFixed(2);
+        document.getElementById('val2Text').innerText = s2.toFixed(2);
+        document.getElementById('val3Text').innerText = s3.toFixed(2);
+        document.getElementById('val4Text').innerText = s4.toFixed(2);
+        document.getElementById('val5Text').innerText = s5.toFixed(2);
+
+        const vectorString = `[${s1.toFixed(2)}, ${s2.toFixed(2)}, ${s3.toFixed(2)}, ${s4.toFixed(2)}, ${s5.toFixed(2)}]`;
+        document.getElementById('vectorDisplay').innerText = vectorString;
+
+        const avg = ((s1 + s2 + s3 + s4 + s5) / 5).toFixed(2);
+        document.getElementById('skorEtikaBig').innerText = avg;
+    }
+
+    const docInput = document.getElementById('documentText');
+    if (docInput) {
+        docInput.addEventListener('input', updateValues);
+    }
+
+    // Agar pilihan radio button langsung merespons saat diklik
+    const hoaxRadios = document.querySelectorAll('input[name="hoaxLabel"]');
+    hoaxRadios.forEach(radio => {
+        radio.addEventListener('change', updateValues);
+    });
+
+    let savedDocuments = [];
+    const form = document.getElementById('annotationForm');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const text = docInput ? docInput.value : '';
+            const labelEl = document.querySelector('input[name="hoaxLabel"]:checked');
+            const label = labelEl ? labelEl.value : 'Bukan hoaks';
+            
+            const vector = document.getElementById('vectorDisplay').innerText;
+            const avg = document.getElementById('skorEtikaBig').innerText;
+
+            savedDocuments.push({ text, label, vector, avg });
+            renderTable();
+
+            form.reset();
+            updateValues();
+        });
+    }
+
+    const resetBtn = document.getElementById('resetBtn');
+    if (resetBtn) {
+        resetBtn.addEventListener('click', function() {
+            if (form) form.reset();
+            updateValues();
+        });
+    }
+
+    function renderTable() {
+        const tbody = document.getElementById('savedTableBody');
+        const tableTitle = document.getElementById('tableTitle');
+        if (tableTitle) tableTitle.innerText = `Dokumen tersimpan (${savedDocuments.length})`;
+        if (!tbody) return;
+
+        if (savedDocuments.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="4" class="text-muted fst-italic py-4 text-center">Belum ada dokumen yang dianotasi.</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = '';
+        savedDocuments.forEach((item) => {
+            tbody.innerHTML += `
+                <tr class="border-bottom">
+                    <td class="text-truncate py-3" style="max-width: 280px;" title="${item.text}">${item.text}</td>
+                    <td><span class="badge ${item.label === 'Hoaks' ? 'bg-danger' : 'bg-success'} px-2.5 py-1 fw-normal">${item.label}</span></td>
+                    <td><code class="text-dark bg-light px-2 py-1 rounded">${item.vector}</code></td>
+                    <td class="fw-bold text-primary">${item.avg}</td>
+                </tr>
+            `;
+        });
+    }
+
+    const exportBtn = document.getElementById('exportBtn');
+    if (exportBtn) {
+        exportBtn.addEventListener('click', function() {
+            if (savedDocuments.length === 0) {
+                alert('Belum ada data anotasi yang disimpan ke tabel untuk diekspor!');
+                return;
+            }
+
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(savedDocuments, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "dce_annotations_export.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        });
+    }
+
+    updateValues();
+</script>
