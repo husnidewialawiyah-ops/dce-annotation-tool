@@ -41,10 +41,10 @@
         <!-- Header Halaman -->
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center border-bottom pb-4 mb-4 gap-3">
             <div>
-                <span class="badge badge-version px-2.5 py-1 rounded-pill mb-2 d-inline-block" style="font-size: 0.7rem; letter-spacing: 0.05em;">KERANGKA ANOTASI — DETEKSI HOAKS POLITIK</span>
+                <span class="badge badge-version px-2.5 py-1 rounded-pill mb-2 d-inline-block" style="font-size: 0.7rem; letter-spacing: 0.05em;">KERANGKA ANOTASI — ANALISIS ETIKA DIGITAL</span>
                 <h1 class="h3 fw-bold mb-1 text-dark">Digital Citizenship Ethics Annotation Framework</h1>
                 <p class="text-secondary mb-0 small" style="max-width: 750px;">
-                    Alat anotasi untuk mengoperasionalkan lima dimensi etika kewarganegaraan digital menjadi vektor fitur numerik, digunakan pada tahap rekayasa fitur DCE-CivicBERT.
+                    Alat anotasi otomatis untuk mengoperasionalkan lima dimensi etika kewarganegaraan digital menjadi vektor fitur numerik.
                 </p>
             </div>
             <div>
@@ -60,20 +60,9 @@
                     <div class="card p-4 h-100 bg-white">
                         <h5 class="h6 fw-bold text-uppercase text-secondary mb-3" style="letter-spacing: 0.05em; font-size: 0.75rem;">Dokumen yang Dianotasi</h5>
                         
-                        <div class="mb-3">
-                            <label for="documentText" class="form-label small fw-bold text-secondary">TEKS POSTINGAN / KOMENTAR POLITIK</label>
-                            <textarea class="form-control bg-light border-0 p-3" id="documentText" rows="6" placeholder="Tempel teks postingan atau komentar bertema politik di sini..." required style="font-size: 0.95rem;"></textarea>
-                        </div>
-
                         <div class="mb-4">
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="hoaxLabel" id="hoaxYes" value="Hoaks">
-                                <label class="form-check-label text-danger fw-medium" for="hoaxYes">Hoaks</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="hoaxLabel" id="hoaxNo" value="Bukan hoaks" checked>
-                                <label class="form-check-label text-success fw-medium" for="hoaxNo">Bukan hoaks</label>
-                            </div>
+                            <label for="documentText" class="form-label small fw-bold text-secondary">TEKS POSTINGAN / KOMENTAR</label>
+                            <textarea class="form-control bg-light border-0 p-3" id="documentText" rows="6" placeholder="Tempel teks postingan atau komentar di sini..." required style="font-size: 0.95rem;"></textarea>
                         </div>
 
                         <!-- Ringkasan Vektor Skor -->
@@ -161,14 +150,13 @@
                     <thead>
                         <tr class="text-secondary small border-bottom">
                             <th class="fw-bold pb-3">CUPLIKAN TEKS</th>
-                            <th class="fw-bold pb-3">LABEL</th>
                             <th class="fw-bold pb-3">VEKTOR ETIKA</th>
-                            <th class="fw-bold pb-3">SKOR</th>
+                            <th class="fw-bold pb-3">SKOR RATA-RATA</th>
                         </tr>
                     </thead>
                     <tbody id="savedTableBody">
                         <tr>
-                            <td colspan="4" class="text-muted fst-italic py-4 text-center">Belum ada dokumen yang dianotasi.</td>
+                            <td colspan="3" class="text-muted fst-italic py-4 text-center">Belum ada dokumen yang dianotasi.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -180,8 +168,6 @@
     <script>
     function updateValues() {
         const text = document.getElementById('documentText').value.trim();
-        const hoaxRadio = document.querySelector('input[name="hoaxLabel"]:checked');
-        const isHoaxLabel = hoaxRadio ? hoaxRadio.value === 'Hoaks' : false;
         
         if (text.length === 0) {
             document.getElementById('val1Text').innerText = "0.00";
@@ -205,19 +191,9 @@
         let s4 = Number((((charCodeSum * 11) % 60 + 35) / 100).toFixed(2));
         let s5 = Number((((charCodeSum * 13) % 80 + 15) / 100).toFixed(2));
 
-        // --- ATURAN BERDASARKAN TOMBOL RADIO HOAKS / BUKAN HOAKS ---
-        if (isHoaxLabel) {
-            // Jika dipilih "Hoaks", integritas informasi dan tanggung jawab demokratis langsung diturunkan drastis
-            s1 = 0.15; 
-            s5 = 0.25;
-        } else {
-            // Jika dipilih "Bukan hoaks", skor integritas dipastikan aman/tinggi
-            if (s1 < 0.60) s1 = 0.75;
-        }
-
         // --- ATURAN BERDASARKAN KATA KUNCI DI TEKS ---
         const lowerText = text.toLowerCase();
-        if (lowerText.includes('hoaks') || lowerText.includes('palsu') || lowerText.includes('fitnah')) {
+        if (lowerText.includes('palsu') || lowerText.includes('fitnah') || lowerText.includes('hoaks')) {
             s1 = 0.15;
         }
         if (lowerText.includes('data') || lowerText.includes('sumber') || lowerText.includes('pajak')) {
@@ -245,25 +221,16 @@
         docInput.addEventListener('input', updateValues);
     }
 
-    // Agar pilihan radio button langsung merespons saat diklik
-    const hoaxRadios = document.querySelectorAll('input[name="hoaxLabel"]');
-    hoaxRadios.forEach(radio => {
-        radio.addEventListener('change', updateValues);
-    });
-
     let savedDocuments = [];
     const form = document.getElementById('annotationForm');
     if (form) {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             const text = docInput ? docInput.value : '';
-            const labelEl = document.querySelector('input[name="hoaxLabel"]:checked');
-            const label = labelEl ? labelEl.value : 'Bukan hoaks';
-            
             const vector = document.getElementById('vectorDisplay').innerText;
             const avg = document.getElementById('skorEtikaBig').innerText;
 
-            savedDocuments.push({ text, label, vector, avg });
+            savedDocuments.push({ text, vector, avg });
             renderTable();
 
             form.reset();
@@ -286,7 +253,7 @@
         if (!tbody) return;
 
         if (savedDocuments.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="4" class="text-muted fst-italic py-4 text-center">Belum ada dokumen yang dianotasi.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="3" class="text-muted fst-italic py-4 text-center">Belum ada dokumen yang dianotasi.</td></tr>`;
             return;
         }
 
@@ -294,8 +261,7 @@
         savedDocuments.forEach((item) => {
             tbody.innerHTML += `
                 <tr class="border-bottom">
-                    <td class="text-truncate py-3" style="max-width: 280px;" title="${item.text}">${item.text}</td>
-                    <td><span class="badge ${item.label === 'Hoaks' ? 'bg-danger' : 'bg-success'} px-2.5 py-1 fw-normal">${item.label}</span></td>
+                    <td class="text-truncate py-3" style="max-width: 350px;" title="${item.text}">${item.text}</td>
                     <td><code class="text-dark bg-light px-2 py-1 rounded">${item.vector}</code></td>
                     <td class="fw-bold text-primary">${item.avg}</td>
                 </tr>
@@ -323,3 +289,5 @@
 
     updateValues();
 </script>
+</body>
+</html>
