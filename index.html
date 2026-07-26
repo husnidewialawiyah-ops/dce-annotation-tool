@@ -151,6 +151,7 @@
                         <tr class="text-secondary small border-bottom">
                             <th class="fw-bold pb-3">CUPLIKAN TEKS</th>
                             <th class="fw-bold pb-3">VEKTOR ETIKA</th>
+                            <th class="fw-bold pb-3">KATEGORI</th>
                             <th class="fw-bold pb-3">SKOR RATA-RATA</th>
                         </tr>
                     </thead>
@@ -165,7 +166,7 @@
     </div>
 
     <!-- SKRIP OTOMATISASI DAN EKSPOR -->
-    <script>
+   <script>
     function updateValues() {
         const text = document.getElementById('documentText').value.trim();
         
@@ -191,7 +192,6 @@
         let s4 = Number((((charCodeSum * 11) % 60 + 35) / 100).toFixed(2));
         let s5 = Number((((charCodeSum * 13) % 80 + 15) / 100).toFixed(2));
 
-        // --- ATURAN BERDASARKAN KATA KUNCI DI TEKS ---
         const lowerText = text.toLowerCase();
         if (lowerText.includes('palsu') || lowerText.includes('fitnah') || lowerText.includes('hoaks')) {
             s1 = 0.15;
@@ -216,6 +216,15 @@
         document.getElementById('skorEtikaBig').innerText = avg;
     }
 
+    // Fungsi untuk menentukan kategori berdasarkan skor rata-rata
+    function getCategory(score) {
+        let numScore = parseFloat(score);
+        if (numScore >= 0.81) return { name: 'Sangat Baik', class: 'bg-success' };
+        if (numScore >= 0.61) return { name: 'Baik', class: 'bg-primary' };
+        if (numScore >= 0.41) return { name: 'Cukup', class: 'bg-warning text-dark' };
+        return { name: 'Buruk', class: 'bg-danger' };
+    }
+
     const docInput = document.getElementById('documentText');
     if (docInput) {
         docInput.addEventListener('input', updateValues);
@@ -229,8 +238,11 @@
             const text = docInput ? docInput.value : '';
             const vector = document.getElementById('vectorDisplay').innerText;
             const avg = document.getElementById('skorEtikaBig').innerText;
+            const categoryObj = getCategory(avg);
+            const kategori = categoryObj.name;
 
-            savedDocuments.push({ text, vector, avg });
+            // Disimpan ke array beserta kategorinya (masuk juga ke file JSON saat diekspor)
+            savedDocuments.push({ text, vector, kategori, avg });
             renderTable();
 
             form.reset();
@@ -253,16 +265,18 @@
         if (!tbody) return;
 
         if (savedDocuments.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="3" class="text-muted fst-italic py-4 text-center">Belum ada dokumen yang dianotasi.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="4" class="text-muted fst-italic py-4 text-center">Belum ada dokumen yang dianotasi.</td></tr>`;
             return;
         }
 
         tbody.innerHTML = '';
         savedDocuments.forEach((item) => {
+            const cat = getCategory(item.avg);
             tbody.innerHTML += `
                 <tr class="border-bottom">
-                    <td class="text-truncate py-3" style="max-width: 350px;" title="${item.text}">${item.text}</td>
+                    <td class="text-truncate py-3" style="max-width: 250px;" title="${item.text}">${item.text}</td>
                     <td><code class="text-dark bg-light px-2 py-1 rounded">${item.vector}</code></td>
+                    <td><span class="badge ${cat.class} px-2.5 py-1 fw-normal">${cat.name}</span></td>
                     <td class="fw-bold text-primary">${item.avg}</td>
                 </tr>
             `;
