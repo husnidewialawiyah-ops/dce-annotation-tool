@@ -193,14 +193,15 @@
         let s5 = Number((((charCodeSum * 13) % 80 + 15) / 100).toFixed(2));
 
         const lowerText = text.toLowerCase();
-        if (lowerText.includes('palsu') || lowerText.includes('fitnah') || lowerText.includes('hoaks')) {
-            s1 = 0.15;
+        // Indikasi pelemahan integritas atau etika komunikasi (cenderung menghasilkan skor rendah/buruk)
+        if (lowerText.includes('hoaks') || lowerText.includes('palsu') || lowerText.includes('fitnah') || lowerText.includes('bodoh')) {
+            s1 = Math.max(0.05, s1 - 0.40);
+            s3 = Math.max(0.05, s3 - 0.45);
         }
-        if (lowerText.includes('data') || lowerText.includes('sumber') || lowerText.includes('pajak')) {
-            s2 = 0.88;
-        }
-        if (lowerText.includes('anjing') || lowerText.includes('tolol') || lowerText.includes('bodoh')) {
-            s3 = 0.10;
+        
+        // Indikasi penguatan klaim berbasis bukti atau integritas
+        if (lowerText.includes('data') || lowerText.includes('riset') || lowerText.includes('sumber') || lowerText.includes('laporan')) {
+            s2 = Math.min(0.95, s2 + 0.30);
         }
 
         document.getElementById('val1Text').innerText = s1.toFixed(2);
