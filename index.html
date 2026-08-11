@@ -44,7 +44,7 @@
                 <span class="badge badge-version px-2.5 py-1 rounded-pill mb-2 d-inline-block" style="font-size: 0.7rem; letter-spacing: 0.05em;">KERANGKA ANOTASI — ANALISIS ETIKA DIGITAL</span>
                 <h1 class="h3 fw-bold mb-1 text-dark">Digital Citizenship Ethics Annotation Framework</h1>
                 <p class="text-secondary mb-0 small" style="max-width: 750px;">
-                    Alat anotasi otomatis untuk mengoperasionalkan dimensi etika kewarganegaraan digital menjadi vektor fitur numerik.
+                    Alat anotasi otomatis untuk mengoperasionalkan lima dimensi etika kewarganegaraan digital menjadi vektor fitur numerik.
                 </p>
             </div>
             <div>
@@ -77,11 +77,11 @@
                                 <div class="border rounded-circle d-flex align-items-center justify-content-center mx-auto mb-1 bg-primary text-white shadow-sm" style="width: 50px; height: 50px;">
                                     <span id="skorEtikaBig" class="fw-bold fs-6">0.00</span>
                                 </div>
-                                <small class="text-muted fw-bold" style="font-size: 0.65rem;">SKOR ETIKA</small>
+                                <small class="text-muted fw-bold" style="font-size: 0.65rem;">SKOR RATA-RATA</small>
                             </div>
                             <div class="flex-grow-1 ms-3 overflow-hidden">
-                                <small class="text-secondary d-block mb-1 fw-bold" style="font-size: 0.75rem;">Vektor fitur etika (3 Dimensi):</small>
-                                <code id="vectorDisplay" class="text-primary fw-bold bg-white px-2 py-1 rounded border d-block">[0.00, 0.00, 0.00]</code>
+                                <small class="text-secondary d-block mb-1 fw-bold" style="font-size: 0.75rem;">Vektor fitur etika (5 Dimensi):[cite: 1]</small>
+                                <code id="vectorDisplay" class="text-primary fw-bold bg-white px-2 py-1 rounded border d-block">[0.00, 0.00, 0.00, 0.00, 0.00]</code>
                                 <div class="mt-2 small">Status Hoaks: <span id="hoaksLabelText">-</span></div>
                             </div>
                         </div>
@@ -95,36 +95,54 @@
                     </div>
                 </div>
 
-                <!-- Kolom Kanan: 3 Dimensi Etika Utama -->
+                <!-- Kolom Kanan: 5 Dimensi Etika Kewarganegaraan -->
                 <div class="col-lg-5">
                     <div class="card p-4 h-100 bg-white">
-                        <h5 class="h6 fw-bold text-uppercase text-secondary mb-3" style="letter-spacing: 0.05em; font-size: 0.75rem;">Tiga Dimensi Etika Utama</h5>
+                        <h5 class="h6 fw-bold text-uppercase text-secondary mb-3" style="letter-spacing: 0.05em; font-size: 0.75rem;">Lima Dimensi Etika Kewarganegaraan[cite: 1]</h5>
                         
                         <!-- Dimensi 1 -->
-                        <div class="dimension-card p-3 mb-3 rounded">
+                        <div class="dimension-card p-2.5 mb-2 rounded">
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="fw-bold text-dark small">Information integrity</span>
-                                <span id="val1Text" class="fs-5 fw-bold" style="color: #4f46e5;">0.00</span>
+                                <span id="val1Text" class="fs-6 fw-bold" style="color: #4f46e5;">0.00</span>
                             </div>
-                            <small class="text-muted" style="font-size: 0.75rem;">Integritas informasi (Rasio 3 Indikator)</small>
+                            <small class="text-muted" style="font-size: 0.7rem;">Integritas informasi</small>
                         </div>
 
                         <!-- Dimensi 2 -->
-                        <div class="dimension-card p-3 mb-3 rounded" style="border-left-color: #0284c7;">
+                        <div class="dimension-card p-2.5 mb-2 rounded" style="border-left-color: #0284c7;">
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="fw-bold text-dark small">Evidence-based claim</span>
-                                <span id="val2Text" class="fs-5 fw-bold" style="color: #0284c7;">0.00</span>
+                                <span id="val2Text" class="fs-6 fw-bold" style="color: #0284c7;">0.00</span>
                             </div>
-                            <small class="text-muted" style="font-size: 0.75rem;">Klaim berbasis bukti (Rasio 3 Indikator)</small>
+                            <small class="text-muted" style="font-size: 0.7rem;">Klaim berbasis bukti</small>
                         </div>
 
                         <!-- Dimensi 3 -->
-                        <div class="dimension-card p-3 rounded" style="border-left-color: #10b981;">
+                        <div class="dimension-card p-2.5 mb-2 rounded" style="border-left-color: #10b981;">
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="fw-bold text-dark small">Respectful communication</span>
-                                <span id="val3Text" class="fs-5 fw-bold" style="color: #10b981;">0.00</span>
+                                <span id="val3Text" class="fs-6 fw-bold" style="color: #10b981;">0.00</span>
                             </div>
-                            <small class="text-muted" style="font-size: 0.75rem;">Komunikasi yang santun (Rasio 3 Indikator)</small>
+                            <small class="text-muted" style="font-size: 0.7rem;">Komunikasi yang santun</small>
+                        </div>
+
+                        <!-- Dimensi 4 -->
+                        <div class="dimension-card p-2.5 mb-2 rounded" style="border-left-color: #f59e0b;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-dark small">Tolerance and diversity</span>
+                                <span id="val4Text" class="fs-6 fw-bold" style="color: #f59e0b;">0.00</span>
+                            </div>
+                            <small class="text-muted" style="font-size: 0.7rem;">Toleransi keberagaman</small>
+                        </div>
+
+                        <!-- Dimensi 5 -->
+                        <div class="dimension-card p-2.5 rounded" style="border-left-color: #8b5cf6;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-dark small">Democratic responsibility</span>
+                                <span id="val5Text" class="fs-6 fw-bold" style="color: #8b5cf6;">0.00</span>
+                            </div>
+                            <small class="text-muted" style="font-size: 0.7rem;">Tanggung jawab demokratis</small>
                         </div>
                     </div>
                 </div>
@@ -157,7 +175,7 @@
     </div>
 
     <!-- SKRIP OTOMATISASI DAN EKSPOR -->
-   <script>
+    <script>
     function updateValues() {
         const title = document.getElementById('newsTitle').value.trim();
         const text = document.getElementById('documentText').value.trim();
@@ -166,7 +184,9 @@
             document.getElementById('val1Text').innerText = "0.00";
             document.getElementById('val2Text').innerText = "0.00";
             document.getElementById('val3Text').innerText = "0.00";
-            document.getElementById('vectorDisplay').innerText = "[0.00, 0.00, 0.00]";
+            document.getElementById('val4Text').innerText = "0.00";
+            document.getElementById('val5Text').innerText = "0.00";
+            document.getElementById('vectorDisplay').innerText = "[0.00, 0.00, 0.00, 0.00, 0.00]";
             document.getElementById('skorEtikaBig').innerText = "0.00";
             document.getElementById('hoaksLabelText').innerText = "-";
             return;
@@ -178,12 +198,14 @@
             charCodeSum += combined.charCodeAt(i);
         }
 
-        // Skala nilai absolut sesuai ketentuan (0.00, 0.33, 0.67, 1.00)
+        // Skala nilai rasio 3 indikator (0.00, 0.33, 0.67, 1.00)
         const allowedScores = [0.00, 0.33, 0.67, 1.00];
         
         let s1 = allowedScores[charCodeSum % 4];
         let s2 = allowedScores[(charCodeSum * 3) % 4];
         let s3 = allowedScores[(charCodeSum * 7) % 4];
+        let s4 = allowedScores[(charCodeSum * 11) % 4];
+        let s5 = allowedScores[(charCodeSum * 13) % 4];
 
         const lowerText = combined.toLowerCase();
         if (lowerText.includes('hoaks') || lowerText.includes('palsu') || lowerText.includes('fitnah') || lowerText.includes('bodoh')) {
@@ -197,11 +219,13 @@
         document.getElementById('val1Text').innerText = s1.toFixed(2);
         document.getElementById('val2Text').innerText = s2.toFixed(2);
         document.getElementById('val3Text').innerText = s3.toFixed(2);
+        document.getElementById('val4Text').innerText = s4.toFixed(2);
+        document.getElementById('val5Text').innerText = s5.toFixed(2);
 
-        const vectorString = `[${s1.toFixed(2)}, ${s2.toFixed(2)}, ${s3.toFixed(2)}]`;
+        const vectorString = `[${s1.toFixed(2)}, ${s2.toFixed(2)}, ${s3.toFixed(2)}, ${s4.toFixed(2)}, ${s5.toFixed(2)}]`;
         document.getElementById('vectorDisplay').innerText = vectorString;
 
-        const avg = ((s1 + s2 + s3) / 3).toFixed(2);
+        const avg = ((s1 + s2 + s3 + s4 + s5) / 5).toFixed(2);
         document.getElementById('skorEtikaBig').innerText = avg;
 
         // Label otomatis Hoaks / Non-Hoaks berdasarkan skor Information Integrity (s1)
@@ -214,7 +238,7 @@
         document.getElementById('hoaksLabelText').innerHTML = `<span class="${hoaksClass} px-2 py-0.5">${hoaksLabel}</span>`;
     }
 
-    // Fungsi 4 Kategori Baru (Sangat Baik: 1.00, Baik: 0.67, Buruk: 0.33, Sangat Buruk: 0.00)
+    // Fungsi 4 Kategori (Sangat Baik: 1.00, Baik: 0.67, Buruk: 0.33, Sangat Buruk: 0.00)
     function getCategory(score) {
         let numScore = parseFloat(score);
         if (numScore >= 0.85) return { name: 'Sangat Baik', class: 'bg-success' };
