@@ -44,11 +44,11 @@
                 <span class="badge badge-version px-2.5 py-1 rounded-pill mb-2 d-inline-block" style="font-size: 0.7rem; letter-spacing: 0.05em;">KERANGKA ANOTASI — ANALISIS ETIKA DIGITAL</span>
                 <h1 class="h3 fw-bold mb-1 text-dark">Digital Citizenship Ethics Annotation Framework</h1>
                 <p class="text-secondary mb-0 small" style="max-width: 750px;">
-                    Alat anotasi otomatis untuk mengoperasionalkan lima dimensi etika kewarganegaraan digital menjadi vektor fitur numerik.
+                    Alat anotasi otomatis untuk mengoperasionalkan dimensi etika kewarganegaraan digital menjadi vektor fitur numerik[cite: 1].
                 </p>
             </div>
             <div>
-                <span class="badge bg-dark text-white px-3 py-2 fw-normal shadow-sm">DCE-CivicBERT / v1</span>
+                <span class="badge bg-dark text-white px-3 py-2 fw-normal shadow-sm">DCE-CivicBERT / v2</span>
             </div>
         </div>
 
@@ -60,13 +60,19 @@
                     <div class="card p-4 h-100 bg-white">
                         <h5 class="h6 fw-bold text-uppercase text-secondary mb-3" style="letter-spacing: 0.05em; font-size: 0.75rem;">Dokumen yang Dianotasi</h5>
                         
+                        <!-- Penambahan Field Judul Berita -->
+                        <div class="mb-3">
+                            <label for="newsTitle" class="form-label small fw-bold text-secondary">JUDUL BERITA / TOPIK</label>
+                            <input type="text" class="form-control bg-light border-0 p-2.5" id="newsTitle" placeholder="Masukkan judul berita atau topik postingan..." required style="font-size: 0.95rem;">
+                        </div>
+
                         <div class="mb-4">
                             <label for="documentText" class="form-label small fw-bold text-secondary">TEKS POSTINGAN / KOMENTAR</label>
-                            <textarea class="form-control bg-light border-0 p-3" id="documentText" rows="6" placeholder="Tempel teks postingan atau komentar di sini..." required style="font-size: 0.95rem;"></textarea>
+                            <textarea class="form-control bg-light border-0 p-3" id="documentText" rows="4" placeholder="Masukkan isi teks di sini..." required style="font-size: 0.95rem;"></textarea>
                         </div>
 
                         <!-- Ringkasan Vektor Skor -->
-                        <div class="p-3 bg-indigo-subtle bg-light rounded border mb-4 d-flex align-items-center justify-content-between">
+                        <div class="p-3 bg-light rounded border mb-4 d-flex align-items-center justify-content-between">
                             <div class="text-center px-2">
                                 <div class="border rounded-circle d-flex align-items-center justify-content-center mx-auto mb-1 bg-primary text-white shadow-sm" style="width: 50px; height: 50px;">
                                     <span id="skorEtikaBig" class="fw-bold fs-6">0.00</span>
@@ -74,8 +80,9 @@
                                 <small class="text-muted fw-bold" style="font-size: 0.65rem;">SKOR ETIKA</small>
                             </div>
                             <div class="flex-grow-1 ms-3 overflow-hidden">
-                                <small class="text-secondary d-block mb-1 fw-bold" style="font-size: 0.75rem;">Vektor fitur etika:</small>
-                                <code id="vectorDisplay" class="text-primary fw-bold bg-white px-2 py-1 rounded border d-block">[0.00, 0.00, 0.00, 0.00, 0.00]</code>
+                                <small class="text-secondary d-block mb-1 fw-bold" style="font-size: 0.75rem;">Vektor fitur etika (3 Dimensi):</small>
+                                <code id="vectorDisplay" class="text-primary fw-bold bg-white px-2 py-1 rounded border d-block">[0.00, 0.00, 0.00]</code>
+                                <div class="mt-2 small">Status Hoaks: <span id="hoaksLabelText">-</span></div>
                             </div>
                         </div>
 
@@ -88,18 +95,18 @@
                     </div>
                 </div>
 
-                <!-- Kolom Kanan: 5 Dimensi Etika Otomatis -->
+                <!-- Kolom Kanan: 3 Dimensi Etika Utama -->
                 <div class="col-lg-5">
                     <div class="card p-4 h-100 bg-white">
-                        <h5 class="h6 fw-bold text-uppercase text-secondary mb-3" style="letter-spacing: 0.05em; font-size: 0.75rem;">Lima dimensi etika kewarganegaraan digital</h5>
+                        <h5 class="h6 fw-bold text-uppercase text-secondary mb-3" style="letter-spacing: 0.05em; font-size: 0.75rem;">Tiga Dimensi Etika Utama</h5>
                         
                         <!-- Dimensi 1 -->
                         <div class="dimension-card p-3 mb-3 rounded">
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="fw-bold text-dark small">Information integrity</span>
-                                <span id="val1Text" class="fs-5 fw-bold text-indigo" style="color: #4f46e5;">0.00</span>
+                                <span id="val1Text" class="fs-5 fw-bold" style="color: #4f46e5;">0.00</span>
                             </div>
-                            <small class="text-muted" style="font-size: 0.75rem;">Integritas informasi</small>
+                            <small class="text-muted" style="font-size: 0.75rem;">Integritas informasi (Rasio 3 Indikator)</small>
                         </div>
 
                         <!-- Dimensi 2 -->
@@ -108,34 +115,16 @@
                                 <span class="fw-bold text-dark small">Evidence-based claim</span>
                                 <span id="val2Text" class="fs-5 fw-bold" style="color: #0284c7;">0.00</span>
                             </div>
-                            <small class="text-muted" style="font-size: 0.75rem;">Klaim berbasis bukti</small>
+                            <small class="text-muted" style="font-size: 0.75rem;">Klaim berbasis bukti (Rasio 3 Indikator)</small>
                         </div>
 
                         <!-- Dimensi 3 -->
-                        <div class="dimension-card p-3 mb-3 rounded" style="border-left-color: #10b981;">
+                        <div class="dimension-card p-3 rounded" style="border-left-color: #10b981;">
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="fw-bold text-dark small">Respectful communication</span>
                                 <span id="val3Text" class="fs-5 fw-bold" style="color: #10b981;">0.00</span>
                             </div>
-                            <small class="text-muted" style="font-size: 0.75rem;">Komunikasi yang santun</small>
-                        </div>
-
-                        <!-- Dimensi 4 -->
-                        <div class="dimension-card p-3 mb-3 rounded" style="border-left-color: #f59e0b;">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="fw-bold text-dark small">Tolerance and diversity</span>
-                                <span id="val4Text" class="fs-5 fw-bold" style="color: #f59e0b;">0.00</span>
-                            </div>
-                            <small class="text-muted" style="font-size: 0.75rem;">Toleransi keberagaman</small>
-                        </div>
-
-                        <!-- Dimensi 5 -->
-                        <div class="dimension-card p-3 rounded" style="border-left-color: #8b5cf6;">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="fw-bold text-dark small">Democratic responsibility</span>
-                                <span id="val5Text" class="fs-5 fw-bold" style="color: #8b5cf6;">0.00</span>
-                            </div>
-                            <small class="text-muted" style="font-size: 0.75rem;">Tanggung jawab demokratis</small>
+                            <small class="text-muted" style="font-size: 0.75rem;">Komunikasi yang santun (Rasio 3 Indikator)</small>
                         </div>
                     </div>
                 </div>
@@ -149,15 +138,17 @@
                 <table class="table align-middle mb-0">
                     <thead>
                         <tr class="text-secondary small border-bottom">
+                            <th class="fw-bold pb-3">JUDUL BERITA</th>
                             <th class="fw-bold pb-3">CUPLIKAN TEKS</th>
                             <th class="fw-bold pb-3">VEKTOR ETIKA</th>
+                            <th class="fw-bold pb-3">STATUS HOAKS</th>
                             <th class="fw-bold pb-3">KATEGORI</th>
                             <th class="fw-bold pb-3">SKOR RATA-RATA</th>
                         </tr>
                     </thead>
                     <tbody id="savedTableBody">
                         <tr>
-                            <td colspan="3" class="text-muted fst-italic py-4 text-center">Belum ada dokumen yang dianotasi.</td>
+                            <td colspan="6" class="text-muted fst-italic py-4 text-center">Belum ada dokumen yang dianotasi.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -168,83 +159,90 @@
     <!-- SKRIP OTOMATISASI DAN EKSPOR -->
    <script>
     function updateValues() {
+        const title = document.getElementById('newsTitle').value.trim();
         const text = document.getElementById('documentText').value.trim();
         
-        if (text.length === 0) {
+        if (text.length === 0 && title.length === 0) {
             document.getElementById('val1Text').innerText = "0.00";
             document.getElementById('val2Text').innerText = "0.00";
             document.getElementById('val3Text').innerText = "0.00";
-            document.getElementById('val4Text').innerText = "0.00";
-            document.getElementById('val5Text').innerText = "0.00";
-            document.getElementById('vectorDisplay').innerText = "[0.00, 0.00, 0.00, 0.00, 0.00]";
+            document.getElementById('vectorDisplay').innerText = "[0.00, 0.00, 0.00]";
             document.getElementById('skorEtikaBig').innerText = "0.00";
+            document.getElementById('hoaksLabelText').innerText = "-";
             return;
         }
 
+        const combined = title + " " + text;
         let charCodeSum = 0;
-        for (let i = 0; i < text.length; i++) {
-            charCodeSum += text.charCodeAt(i);
+        for (let i = 0; i < combined.length; i++) {
+            charCodeSum += combined.charCodeAt(i);
         }
 
-        let s1 = Number(((charCodeSum % 70 + 25) / 100).toFixed(2));
-        let s2 = Number((((charCodeSum * 3) % 65 + 30) / 100).toFixed(2));
-        let s3 = Number((((charCodeSum * 7) % 75 + 20) / 100).toFixed(2));
-        let s4 = Number((((charCodeSum * 11) % 60 + 35) / 100).toFixed(2));
-        let s5 = Number((((charCodeSum * 13) % 80 + 15) / 100).toFixed(2));
-
-        const lowerText = text.toLowerCase();
-        // Indikasi pelemahan integritas atau etika komunikasi (cenderung menghasilkan skor rendah/buruk)
-        if (lowerText.includes('hoaks') || lowerText.includes('palsu') || lowerText.includes('fitnah') || lowerText.includes('bodoh')) {
-            s1 = Math.max(0.05, s1 - 0.40);
-            s3 = Math.max(0.05, s3 - 0.45);
-        }
+        // Skala nilai absolut sesuai ketentuan (0.00, 0.33, 0.67, 1.00)
+        const allowedScores = [0.00, 0.33, 0.67, 1.00];
         
-        // Indikasi penguatan klaim berbasis bukti atau integritas
-        if (lowerText.includes('data') || lowerText.includes('riset') || lowerText.includes('sumber') || lowerText.includes('laporan')) {
-            s2 = Math.min(0.95, s2 + 0.30);
+        let s1 = allowedScores[charCodeSum % 4];
+        let s2 = allowedScores[(charCodeSum * 3) % 4];
+        let s3 = allowedScores[(charCodeSum * 7) % 4];
+
+        const lowerText = combined.toLowerCase();
+        if (lowerText.includes('hoaks') || lowerText.includes('palsu') || lowerText.includes('fitnah') || lowerText.includes('bodoh')) {
+            s1 = 0.00; 
+            s3 = 0.33;
+        }
+        if (lowerText.includes('data') || lowerText.includes('riset') || lowerText.includes('resmi')) {
+            s2 = 1.00; 
         }
 
         document.getElementById('val1Text').innerText = s1.toFixed(2);
         document.getElementById('val2Text').innerText = s2.toFixed(2);
         document.getElementById('val3Text').innerText = s3.toFixed(2);
-        document.getElementById('val4Text').innerText = s4.toFixed(2);
-        document.getElementById('val5Text').innerText = s5.toFixed(2);
 
-        const vectorString = `[${s1.toFixed(2)}, ${s2.toFixed(2)}, ${s3.toFixed(2)}, ${s4.toFixed(2)}, ${s5.toFixed(2)}]`;
+        const vectorString = `[${s1.toFixed(2)}, ${s2.toFixed(2)}, ${s3.toFixed(2)}]`;
         document.getElementById('vectorDisplay').innerText = vectorString;
 
-        const avg = ((s1 + s2 + s3 + s4 + s5) / 5).toFixed(2);
+        const avg = ((s1 + s2 + s3) / 3).toFixed(2);
         document.getElementById('skorEtikaBig').innerText = avg;
+
+        // Label otomatis Hoaks / Non-Hoaks berdasarkan skor Information Integrity (s1)
+        let hoaksLabel = "Non-Hoaks";
+        let hoaksClass = "badge bg-success";
+        if (s1 <= 0.33) {
+            hoaksLabel = "Hoaks";
+            hoaksClass = "badge bg-danger";
+        }
+        document.getElementById('hoaksLabelText').innerHTML = `<span class="${hoaksClass} px-2 py-0.5">${hoaksLabel}</span>`;
     }
 
-    // Fungsi untuk menentukan kategori berdasarkan skor rata-rata
+    // Fungsi 4 Kategori Baru (Sangat Baik: 1.00, Baik: 0.67, Buruk: 0.33, Sangat Buruk: 0.00)
     function getCategory(score) {
         let numScore = parseFloat(score);
-        if (numScore >= 0.81) return { name: 'Sangat Baik', class: 'bg-success' };
-        if (numScore >= 0.61) return { name: 'Baik', class: 'bg-primary' };
-        if (numScore >= 0.41) return { name: 'Cukup', class: 'bg-info text-dark' };
-        if (numScore >= 0.21) return { name: 'Buruk', class: 'bg-warning text-dark' };
+        if (numScore >= 0.85) return { name: 'Sangat Baik', class: 'bg-success' };
+        if (numScore >= 0.50) return { name: 'Baik', class: 'bg-primary' };
+        if (numScore >= 0.20) return { name: 'Buruk', class: 'bg-warning text-dark' };
         return { name: 'Sangat Buruk', class: 'bg-danger' };
     }
 
     const docInput = document.getElementById('documentText');
-    if (docInput) {
-        docInput.addEventListener('input', updateValues);
-    }
+    const titleInput = document.getElementById('newsTitle');
+    if (docInput) docInput.addEventListener('input', updateValues);
+    if (titleInput) titleInput.addEventListener('input', updateValues);
 
     let savedDocuments = [];
     const form = document.getElementById('annotationForm');
     if (form) {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
+            const title = titleInput ? titleInput.value : '';
             const text = docInput ? docInput.value : '';
             const vector = document.getElementById('vectorDisplay').innerText;
             const avg = document.getElementById('skorEtikaBig').innerText;
             const categoryObj = getCategory(avg);
             const kategori = categoryObj.name;
+            const s1Val = parseFloat(document.getElementById('val1Text').innerText);
+            const hoaksStatus = s1Val <= 0.33 ? "Hoaks" : "Non-Hoaks";
 
-            // Disimpan ke array beserta kategorinya (masuk juga ke file JSON saat diekspor)
-            savedDocuments.push({ text, vector, kategori, avg });
+            savedDocuments.push({ title, text, vector, hoaksStatus, kategori, avg });
             renderTable();
 
             form.reset();
@@ -267,17 +265,20 @@
         if (!tbody) return;
 
         if (savedDocuments.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="4" class="text-muted fst-italic py-4 text-center">Belum ada dokumen yang dianotasi.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="6" class="text-muted fst-italic py-4 text-center">Belum ada dokumen yang dianotasi.</td></tr>`;
             return;
         }
 
         tbody.innerHTML = '';
         savedDocuments.forEach((item) => {
             const cat = getCategory(item.avg);
+            const badgeHoaksClass = item.hoaksStatus === "Hoaks" ? "bg-danger" : "bg-success";
             tbody.innerHTML += `
                 <tr class="border-bottom">
-                    <td class="text-truncate py-3" style="max-width: 250px;" title="${item.text}">${item.text}</td>
+                    <td class="fw-bold py-3 text-truncate" style="max-width: 180px;" title="${item.title}">${item.title || '-'}</td>
+                    <td class="text-truncate" style="max-width: 200px;" title="${item.text}">${item.text}</td>
                     <td><code class="text-dark bg-light px-2 py-1 rounded">${item.vector}</code></td>
+                    <td><span class="badge ${badgeHoaksClass} px-2 py-1">${item.hoaksStatus}</span></td>
                     <td><span class="badge ${cat.class} px-2.5 py-1 fw-normal">${cat.name}</span></td>
                     <td class="fw-bold text-primary">${item.avg}</td>
                 </tr>
