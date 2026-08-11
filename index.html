@@ -176,6 +176,22 @@
 
     <!-- SKRIP OTOMATISASI DAN EKSPOR -->
     <script>
+    // Fungsi untuk membulatkan skor ke nilai diskrit terdekat (0.00, 0.33, 0.67, 1.00)
+    function roundToClosestAllowed(val) {
+        const allowedScores = [0.00, 0.33, 0.67, 1.00];
+        let closest = allowedScores[0];
+        let minDiff = Math.abs(val - closest);
+        
+        for (let i = 1; i < allowedScores.length; i++) {
+            let diff = Math.abs(val - allowedScores[i]);
+            if (diff < minDiff) {
+                minDiff = diff;
+                closest = allowedScores[i];
+            }
+        }
+        return closest;
+    }
+
     function updateValues() {
         const title = document.getElementById('newsTitle').value.trim();
         const text = document.getElementById('documentText').value.trim();
@@ -198,7 +214,7 @@
             charCodeSum += combined.charCodeAt(i);
         }
 
-        // Skala nilai rasio 3 indikator (0.00, 0.33, 0.67, 1.00)
+        // Skala nilai rasio 4 tingkat (0.00, 0.33, 0.67, 1.00)
         const allowedScores = [0.00, 0.33, 0.67, 1.00];
         
         let s1 = allowedScores[charCodeSum % 4];
@@ -225,7 +241,9 @@
         const vectorString = `[${s1.toFixed(2)}, ${s2.toFixed(2)}, ${s3.toFixed(2)}, ${s4.toFixed(2)}, ${s5.toFixed(2)}]`;
         document.getElementById('vectorDisplay').innerText = vectorString;
 
-        const avg = ((s1 + s2 + s3 + s4 + s5) / 5).toFixed(2);
+        // Menghitung rata-rata lalu membulatkannya ke nilai terdekat yang diizinkan
+        const rawAvg = (s1 + s2 + s3 + s4 + s5) / 5;
+        const avg = roundToClosestAllowed(rawAvg).toFixed(2);
         document.getElementById('skorEtikaBig').innerText = avg;
 
         // Label otomatis Hoaks / Non-Hoaks berdasarkan skor Information Integrity (s1)
@@ -238,13 +256,13 @@
         document.getElementById('hoaksLabelText').innerHTML = `<span class="${hoaksClass} px-2 py-0.5">${hoaksLabel}</span>`;
     }
 
-    // Fungsi 4 Kategori (Sangat Baik: 1.00, Baik: 0.67, Buruk: 0.33, Sangat Buruk: 0.00)
+    // Fungsi Kategori disesuaikan dengan 4 titik nilai pasti
     function getCategory(score) {
         let numScore = parseFloat(score);
-        if (numScore >= 0.85) return { name: 'Sangat Baik', class: 'bg-success' };
-        if (numScore >= 0.50) return { name: 'Baik', class: 'bg-primary' };
-        if (numScore >= 0.20) return { name: 'Buruk', class: 'bg-warning text-dark' };
-        return { name: 'Sangat Buruk', class: 'bg-danger' };
+        if (numScore >= 1.00) return { name: 'Sangat Baik', class: 'bg-success' };      // Untuk nilai 1.00
+        if (numScore >= 0.67) return { name: 'Baik', class: 'bg-primary' };           // Untuk nilai 0.67
+        if (numScore >= 0.33) return { name: 'Buruk', class: 'bg-warning text-dark' }; // Untuk nilai 0.33
+        return { name: 'Sangat Buruk', class: 'bg-danger' };                         // Untuk nilai 0.00
     }
 
     const docInput = document.getElementById('documentText');
