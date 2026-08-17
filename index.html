@@ -86,9 +86,51 @@
                             </div>
                         </div>
 
-                        <!-- Panel Catatan Dinamis -->
-                        <div class="p-3 bg-light rounded border mb-4 text-secondary small" id="catatanBox">
-                            <strong>Catatan:</strong> <span id="catatanText">Masukkan judul dan teks postingan untuk melihat analisis etika digital secara real-time.</span>
+                        <!-- Tabel Detail Hasil Analisis 5 Dimensi & Catatan Dinamis -->
+                        <div class="card p-3 mb-4 bg-white border">
+                            <h6 class="h6 fw-bold text-uppercase text-secondary mb-3" style="letter-spacing: 0.05em; font-size: 0.75rem;">Hasil Analisis Konten: Profil Etika Kewarganegaraan Digital</h6>
+                            <div class="table-responsive">
+                                <table class="table table-bordered align-middle small mb-3">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th class="fw-bold">Dimensi</th>
+                                            <th class="fw-bold" style="width: 80px;">Skor</th>
+                                            <th class="fw-bold" style="width: 140px;">Interpretasi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="dimensionTableBody">
+                                        <tr>
+                                            <td>Information Integrity</td>
+                                            <td class="fw-bold" id="tblVal1">0.00</td>
+                                            <td><span id="tblInt1" class="badge bg-secondary">-</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Evidence-based Claim</td>
+                                            <td class="fw-bold" id="tblVal2">0.00</td>
+                                            <td><span id="tblInt2" class="badge bg-secondary">-</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Respectful Communication</td>
+                                            <td class="fw-bold" id="tblVal3">0.00</td>
+                                            <td><span id="tblInt3" class="badge bg-secondary">-</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tolerance and Diversity</td>
+                                            <td class="fw-bold" id="tblVal4">0.00</td>
+                                            <td><span id="tblInt4" class="badge bg-secondary">-</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Democratic Responsibility</td>
+                                            <td class="fw-bold" id="tblVal5">0.00</td>
+                                            <td><span id="tblInt5" class="badge bg-secondary">-</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- Panel Catatan Komprehensif -->
+                            <div class="p-3 bg-light rounded border text-secondary small" id="catatanBox">
+                                <strong>Catatan:</strong> <span id="catatanText">Masukkan judul dan teks postingan untuk melihat analisis etika digital secara real-time.</span>
+                            </div>
                         </div>
 
                         <!-- Tombol Aksi -->
@@ -197,6 +239,14 @@
         return closest;
     }
 
+    // Fungsi helper untuk melabeli teks interpretasi per dimensi pada tabel
+    function getInterpretationDetail(score) {
+        if (score >= 1.00) return { name: 'Sangat Baik', class: 'bg-success bg-opacity-10 text-success' };      
+        if (score >= 0.67) return { name: 'Baik', class: 'bg-primary bg-opacity-10 text-primary' };            
+        if (score >= 0.33) return { name: 'Rendah', class: 'bg-warning bg-opacity-10 text-dark' }; 
+        return { name: 'Sangat Buruk', class: 'bg-danger bg-opacity-10 text-danger' };                            
+    }
+
     // Fungsi Evaluasi Berdasarkan 3 Indikator per Dimensi (Skor = Indikator Terpenuhi / 3)
     function updateValues() {
         const title = document.getElementById('newsTitle').value.trim();
@@ -211,6 +261,12 @@
             document.getElementById('vectorDisplay').innerText = "[0.00, 0.00, 0.00, 0.00, 0.00]";
             document.getElementById('skorEtikaBig').innerText = "0.00";
             document.getElementById('hoaksLabelText').innerText = "-";
+            
+            // Reset tabel detail & catatan
+            for(let i=1; i<=5; i++) {
+                document.getElementById('tblVal'+i).innerText = "0.00";
+                document.getElementById('tblInt'+i).innerHTML = '<span class="badge bg-secondary">-</span>';
+            }
             document.getElementById('catatanText').innerText = "Masukkan judul dan teks postingan untuk melihat analisis etika digital secara real-time.";
             return;
         }
@@ -252,11 +308,21 @@
         let count5 = ind5_1 + ind5_2 + ind5_3;
         let s5 = parseFloat((count5 / 3).toFixed(2));
 
+        // Tampilan Kartu Kanan
         document.getElementById('val1Text').innerText = s1.toFixed(2);
         document.getElementById('val2Text').innerText = s2.toFixed(2);
         document.getElementById('val3Text').innerText = s3.toFixed(2);
         document.getElementById('val4Text').innerText = s4.toFixed(2);
         document.getElementById('val5Text').innerText = s5.toFixed(2);
+
+        // Update Tabel Detail 5 Dimensi di Kolom Kiri
+        const scores = [s1, s2, s3, s4, s5];
+        for(let i=0; i<scores.length; i++) {
+            let idx = i + 1;
+            document.getElementById('tblVal' + idx).innerText = scores[i].toFixed(2);
+            let detail = getInterpretationDetail(scores[i]);
+            document.getElementById('tblInt' + idx).innerHTML = `<span class="badge ${detail.class}">${detail.name}</span>`;
+        }
 
         const vectorString = `[${s1.toFixed(2)}, ${s2.toFixed(2)}, ${s3.toFixed(2)}, ${s4.toFixed(2)}, ${s5.toFixed(2)}]`;
         document.getElementById('vectorDisplay').innerText = vectorString;
@@ -273,16 +339,39 @@
         }
         document.getElementById('hoaksLabelText').innerHTML = `<span class="${hoaksClass} px-2 py-0.5">${hoaksLabel}</span>`;
 
-        // Logika Catatan Dinamis yang Tidak Kontradiktif (Termasuk Kasus Campuran)
-        let catatanText = "";
+        // Generator Catatan Dinamis Komprehensif (Menyesuaikan Kasus Ideal, Buruk, Maupun Campuran)
+        let catatanCustom = "";
         if (rawAvg >= 0.8) {
-            catatanText = "Konten menunjukkan kualitas etika kewarganegaraan digital yang sangat baik; integritas informasi, komunikasi yang santun, serta klaim berbasis bukti telah terpenuhi secara optimal.";
-        } else if (rawAvg >= 0.5) {
-            catatanText = "Konten sudah cukup baik, namun masih memerlukan peningkatan pada beberapa dimensi etika digital tertentu.";
+            catatanCustom = "Konten menunjukkan kualitas etika kewarganegaraan digital yang sangat baik; integritas informasi, komunikasi yang santun, serta klaim berbasis bukti telah terpenuhi secara optimal.";
         } else {
-            catatanText = "Konten terindikasi kurang memenuhi standar etika kewarganegaraan digital dan memerlukan tinjauan ulang yang mendalam.";
+            let strengths = [];
+            let weaknesses = [];
+            
+            if (s3 >= 0.67) strengths.push("komunikasi yang relatif santun");
+            if (s4 >= 0.67) strengths.push("penghargaan terhadap keberagaman");
+            if (s1 >= 0.67) strengths.push("integritas informasi yang terjaga");
+            if (s5 >= 0.67) strengths.push("tanggung jawab demokratis yang baik");
+            
+            if (s2 <= 0.33) weaknesses.push("kelemahan dalam penyajian bukti atas klaim yang disampaikan");
+            if (s1 <= 0.33) weaknesses.push("potensi kerentanan terhadap validitas informasi atau indikasi hoaks");
+            if (s3 <= 0.33) weaknesses.push("penggunaan bahasa yang kurang santun atau toksik");
+            if (s4 <= 0.33) weaknesses.push("kurangnya unsur toleransi");
+            if (s5 <= 0.33) weaknesses.push("kecenderungan provokasi atau kurangnya tanggung jawab demokratis");
+
+            catatanCustom = "Konten ";
+            if (strengths.length > 0) {
+                catatanCustom += `menunjukkan keunggulan pada aspek ${strengths.join(' dan ')}`;
+            } else {
+                catatanCustom += "memerlukan perhatian khusus pada berbagai dimensi etika";
+            }
+            
+            if (weaknesses.length > 0) {
+                catatanCustom += `, tetapi masih memiliki ${weaknesses.join(' serta ')}.`;
+            } else {
+                catatanCustom += ".";
+            }
         }
-        document.getElementById('catatanText').innerText = catatanText;
+        document.getElementById('catatanText').innerText = catatanCustom;
     }
 
     function getCategory(score) {
