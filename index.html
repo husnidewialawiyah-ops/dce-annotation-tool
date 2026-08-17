@@ -85,7 +85,7 @@
                             </div>
                         </div>
 
-                        <!-- Panel Profil Etika & Hasil Analisis (Pengganti Hoaks/Non-Hoaks) -->
+                        <!-- Panel Profil Etika & Hasil Analisis -->
                         <div class="mb-4 p-3 border rounded bg-white">
                             <h6 class="fw-bold text-secondary small text-uppercase mb-2" style="font-size: 0.75rem; letter-spacing: 0.05em;">Hasil Analisis Konten: Profil Etika Kewarganegaraan Digital</h6>
                             <div class="table-responsive mb-2">
@@ -260,11 +260,14 @@
         let ind2_3 = (combined.includes('fakta') || combined.includes('berdasarkan data') || !combined.includes('menurut saya pribadi')) ? 1 : 0;
         let s2 = parseFloat(((ind2_1 + ind2_2 + ind2_3) / 3).toFixed(2));
 
-        // --- Dimensi 3: Respectful Communication ---
-        let ind3_1 = (combined.includes('benci') || combined.includes('anjir') || combined.includes('makian') || combined.includes('keparat')) ? 0 : 1;
-        let ind3_2 = (combined.includes('bodoh') || combined.includes('tolol') || combined.includes('goblok') || combined.includes('idiot') || combined.includes('kampungan')) ? 0 : 1;
+        // --- Dimensi 3: Respectful Communication (Penyempurnaan Deteksi Toxic) ---
+        let hasToxicWords = (combined.includes('benci') || combined.includes('anjir') || combined.includes('makian') || combined.includes('keparat') || combined.includes('bodoh') || combined.includes('tolol') || combined.includes('goblok') || combined.includes('idiot') || combined.includes('kampungan') || combined.includes('anjrit') || combined.includes('bangsat'));
+        
+        let ind3_1 = hasToxicWords ? 0 : 1;
+        let ind3_2 = hasToxicWords ? 0 : 1;
         let ind3_3 = (combined.includes('serangan personal') || combined.includes('ad hominem')) ? 0 : 1;
-        let s3 = parseFloat(((ind3_1 + ind3_2 + ind3_3) / 3).toFixed(2));
+        let count3 = ind3_1 + ind3_2 + ind3_3;
+        let s3 = parseFloat((count3 / 3).toFixed(2));
 
         // --- Dimensi 4: Tolerance and Diversity ---
         let ind4_1 = (combined.includes('sara') || combined.includes('rasis') || combined.includes('antitoleran') || combined.includes('diskriminasi')) ? 0 : 1;
@@ -307,15 +310,24 @@
         `;
 
         // Membuat Catatan Analisis Otomatis Dinamis
-        let notes = [];
-        if (s3 >= 0.67) notes.s3 = "komunikasi yang relatif santun";
-        else notes.s3 = "perlu peningkatan kesantunan komunikasi";
+        let notes = {};
+        if (s3 >= 0.67) {
+            notes.s3 = "komunikasi yang relatif santun";
+        } else {
+            notes.s3 = "indikasi penggunaan bahasa yang kurang santun atau kasar";
+        }
 
-        if (s4 >= 0.67) notes.s4 = "menghargai keberagaman";
-        else notes.s4 = "memerlukan perhatian pada aspek toleransi";
+        if (s4 >= 0.67) {
+            notes.s4 = "menghargai keberagaman";
+        } else {
+            notes.s4 = "memerlukan perhatian pada aspek toleransi";
+        }
 
-        if (s2 < 0.67) notes.s2 = "memiliki kelemahan dalam penyajian bukti atas klaim yang disampaikan";
-        else notes.s2 = "didukung oleh klaim berbasis bukti yang memadai";
+        if (s2 < 0.67) {
+            notes.s2 = "memiliki kelemahan dalam penyajian bukti atas klaim yang disampaikan";
+        } else {
+            notes.s2 = "didukung oleh klaim berbasis bukti yang memadai";
+        }
 
         document.getElementById('analysisNoteContainer').innerHTML = `
             <strong>Catatan:</strong> Konten menunjukkan ${notes.s3} dan ${notes.s4}, tetapi masih ${notes.s2}.
@@ -352,7 +364,6 @@
             const categoryObj = getCategory(avg);
             const kategori = categoryObj.name;
             
-            // Simpan ringkasan profil singkat untuk kolom tabel
             const s1 = document.getElementById('val1Text').innerText;
             const s3 = document.getElementById('val3Text').innerText;
             const profileSummary = `Info: ${s1} | Santun: ${s3}`;
