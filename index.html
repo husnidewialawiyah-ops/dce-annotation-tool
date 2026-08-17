@@ -54,82 +54,84 @@
 
         <!-- Form & Content Grid -->
         <form id="annotationForm">
-            <div class="row g-4">
+            <div class="row g-4 align-items-stretch">
                 <!-- Kolom Kiri: Input Dokumen -->
-                <div class="col-lg-7">
-                    <div class="card p-4 h-100 bg-white">
-                        <h5 class="h6 fw-bold text-uppercase text-secondary mb-3" style="letter-spacing: 0.05em; font-size: 0.75rem;">Dokumen yang Dianotasi</h5>
-                        
-                        <!-- Penambahan Field Judul Berita -->
-                        <div class="mb-3">
-                            <label for="newsTitle" class="form-label small fw-bold text-secondary">JUDUL BERITA / TOPIK</label>
-                            <input type="text" class="form-control bg-light border-0 p-2.5" id="newsTitle" placeholder="Masukkan judul berita atau topik postingan..." required style="font-size: 0.95rem;">
-                        </div>
+                <div class="col-lg-7 d-flex">
+                    <div class="card p-4 w-100 bg-white d-flex flex-column justify-content-between">
+                        <div>
+                            <h5 class="h6 fw-bold text-uppercase text-secondary mb-3" style="letter-spacing: 0.05em; font-size: 0.75rem;">Dokumen yang Dianotasi</h5>
+                            
+                            <!-- Penambahan Field Judul Berita -->
+                            <div class="mb-3">
+                                <label for="newsTitle" class="form-label small fw-bold text-secondary">JUDUL BERITA / TOPIK</label>
+                                <input type="text" class="form-control bg-light border-0 p-2.5" id="newsTitle" placeholder="Masukkan judul berita atau topik postingan..." required style="font-size: 0.95rem;">
+                            </div>
 
-                        <div class="mb-4">
-                            <label for="documentText" class="form-label small fw-bold text-secondary">TEKS POSTINGAN / KOMENTAR</label>
-                            <textarea class="form-control bg-light border-0 p-3" id="documentText" rows="4" placeholder="Masukkan isi teks di sini..." required style="font-size: 0.95rem;"></textarea>
-                        </div>
+                            <div class="mb-4">
+                                <label for="documentText" class="form-label small fw-bold text-secondary">TEKS POSTINGAN / KOMENTAR</label>
+                                <textarea class="form-control bg-light border-0 p-3" id="documentText" rows="4" placeholder="Masukkan isi teks di sini..." required style="font-size: 0.95rem;"></textarea>
+                            </div>
 
-                        <!-- Ringkasan Vektor Skor -->
-                        <div class="p-3 bg-light rounded border mb-4 d-flex align-items-center justify-content-between">
-                            <div class="text-center px-2">
-                                <div class="border rounded-circle d-flex align-items-center justify-content-center mx-auto mb-1 bg-primary text-white shadow-sm" style="width: 50px; height: 50px;">
-                                    <span id="skorEtikaBig" class="fw-bold fs-6">0.00</span>
+                            <!-- Ringkasan Vektor Skor -->
+                            <div class="p-3 bg-light rounded border mb-4 d-flex align-items-center justify-content-between">
+                                <div class="text-center px-2">
+                                    <div class="border rounded-circle d-flex align-items-center justify-content-center mx-auto mb-1 bg-primary text-white shadow-sm" style="width: 50px; height: 50px;">
+                                        <span id="skorEtikaBig" class="fw-bold fs-6">0.00</span>
+                                    </div>
+                                    <small class="text-muted fw-bold" style="font-size: 0.65rem;">SKOR RATA-RATA</small>
                                 </div>
-                                <small class="text-muted fw-bold" style="font-size: 0.65rem;">SKOR RATA-RATA</small>
+                                <div class="flex-grow-1 ms-3 overflow-hidden">
+                                    <small class="text-secondary d-block mb-1 fw-bold" style="font-size: 0.75rem;">Vektor fitur</small>
+                                    <code id="vectorDisplay" class="text-primary fw-bold bg-white px-2 py-1 rounded border d-block">[0.00, 0.00, 0.00, 0.00, 0.00]</code>
+                                    <div class="mt-2 small" style="display: none;"><span id="hoaksLabelText">-</span></div>
+                                </div>
                             </div>
-                            <div class="flex-grow-1 ms-3 overflow-hidden">
-                                <small class="text-secondary d-block mb-1 fw-bold" style="font-size: 0.75rem;">Vektor fitur</small>
-                                <code id="vectorDisplay" class="text-primary fw-bold bg-white px-2 py-1 rounded border d-block">[0.00, 0.00, 0.00, 0.00, 0.00]</code>
-                                <div class="mt-2 small" style="display: none;"><span id="hoaksLabelText">-</span></div>
-                            </div>
-                        </div>
 
-                        <!-- Tabel Detail Hasil Analisis 5 Dimensi & Catatan Dinamis -->
-                        <div class="card p-3 mb-4 bg-white border">
-                            <h6 class="h6 fw-bold text-uppercase text-secondary mb-3" style="letter-spacing: 0.05em; font-size: 0.75rem;">Hasil Analisis Konten: Profil Etika Kewarganegaraan Digital</h6>
-                            <div class="table-responsive">
-                                <table class="table table-bordered align-middle small mb-3">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th class="fw-bold">Dimensi</th>
-                                            <th class="fw-bold" style="width: 80px;">Skor</th>
-                                            <th class="fw-bold" style="width: 140px;">Interpretasi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="dimensionTableBody">
-                                        <tr>
-                                            <td>Information Integrity</td>
-                                            <td class="fw-bold" id="tblVal1">0.00</td>
-                                            <td id="tblInt1">-</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Evidence-based Claim</td>
-                                            <td class="fw-bold" id="tblVal2">0.00</td>
-                                            <td id="tblInt2">-</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Respectful Communication</td>
-                                            <td class="fw-bold" id="tblVal3">0.00</td>
-                                            <td id="tblInt3">-</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Tolerance and Diversity</td>
-                                            <td class="fw-bold" id="tblVal4">0.00</td>
-                                            <td id="tblInt4">-</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Democratic Responsibility</td>
-                                            <td class="fw-bold" id="tblVal5">0.00</td>
-                                            <td id="tblInt5">-</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- Panel Catatan Komprehensif -->
-                            <div class="p-3 bg-light rounded border text-secondary small" id="catatanBox">
-                                <strong>Catatan:</strong> <span id="catatanText">Belum ada teks yang dianalisis.</span>
+                            <!-- Tabel Detail Hasil Analisis 5 Dimensi & Catatan Dinamis -->
+                            <div class="card p-3 mb-4 bg-white border">
+                                <h6 class="h6 fw-bold text-uppercase text-secondary mb-3" style="letter-spacing: 0.05em; font-size: 0.75rem;">Hasil Analisis Konten: Profil Etika Kewarganegaraan Digital</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered align-middle small mb-3">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th class="fw-bold">Dimensi</th>
+                                                <th class="fw-bold" style="width: 80px;">Skor</th>
+                                                <th class="fw-bold" style="width: 140px;">Interpretasi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="dimensionTableBody">
+                                            <tr>
+                                                <td>Information Integrity</td>
+                                                <td class="fw-bold" id="tblVal1">0.00</td>
+                                                <td id="tblInt1">-</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Evidence-based Claim</td>
+                                                <td class="fw-bold" id="tblVal2">0.00</td>
+                                                <td id="tblInt2">-</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Respectful Communication</td>
+                                                <td class="fw-bold" id="tblVal3">0.00</td>
+                                                <td id="tblInt3">-</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Tolerance and Diversity</td>
+                                                <td class="fw-bold" id="tblVal4">0.00</td>
+                                                <td id="tblInt4">-</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Democratic Responsibility</td>
+                                                <td class="fw-bold" id="tblVal5">0.00</td>
+                                                <td id="tblInt5">-</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- Panel Catatan Komprehensif -->
+                                <div class="p-3 bg-light rounded border text-secondary small" id="catatanBox">
+                                    <strong>Catatan:</strong> <span id="catatanText">Belum ada teks yang dianalisis.</span>
+                                </div>
                             </div>
                         </div>
 
@@ -142,9 +144,9 @@
                     </div>
                 </div>
 
-                <!-- Kolom Kanan: 5 Dimensi Etika Kewarganegaraan (Dibuat sejajar sampai tombol Simpan anotasi menggunakan h-100 dan flexbox) -->
-                <div class="col-lg-5">
-                    <div class="card p-4 bg-white h-100 d-flex flex-column justify-content-between">
+                <!-- Kolom Kanan: 5 Dimensi Etika Kewarganegaraan (Dibuat sejajar tingginya dengan kolom kiri) -->
+                <div class="col-lg-5 d-flex">
+                    <div class="card p-4 bg-white w-100 d-flex flex-column justify-content-between">
                         <div>
                             <h5 class="h6 fw-bold text-uppercase text-secondary mb-3" style="letter-spacing: 0.05em; font-size: 0.75rem;">Lima Dimensi Etika Kewarganegaraan</h5>
                             
@@ -229,7 +231,7 @@
         </div>
     </div>
 
-   <!-- SKRIP OTOMATISASI DAN EKSPOR -->
+    <!-- SKRIP OTOMATISASI DAN EKSPOR -->
     <script>
     function roundToClosestAllowed(val) {
         const allowedScores = [0.00, 0.33, 0.67, 1.00];
